@@ -56,6 +56,8 @@ aws s3api create-bucket \
 
 Bucket creado exitosamente con la nomenclatura `my-image-storage-bucket-csarmiento-2026` en la región `us-east-1`.
 
+![Crear Bucket S3](img/01_crear_s3.png)
+
 ---
 
 ## Paso 3: Crear la Tabla DynamoDB
@@ -92,6 +94,8 @@ aws dynamodb create-table \
 ```
 
 Tabla creada con modo de capacidad bajo demanda (PAY_PER_REQUEST), lo que permite escalar automáticamente.
+
+![Crear DynamoDB](img/02_crear_dynamodb.png)
 
 ---
 
@@ -187,6 +191,8 @@ aws lambda create-function \
 }
 ```
 
+![Crear Lambda upload_image](img/03_crear_lambda_upload.png)
+
 ### 4.2 Función `get_image_metadata`
 
 Esta función consulta DynamoDB para obtener los metadatos de una imagen dado su `image_id`.
@@ -277,6 +283,8 @@ aws lambda create-function \
 }
 ```
 
+![Crear Lambda get_image_metadata](img/04_crear_lambda_get.png)
+
 ---
 
 ## Paso 5: Configurar API Gateway
@@ -356,6 +364,8 @@ aws apigateway put-integration \
   --uri "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:339713058285:function:get_image_metadata/invocations"
 ```
 
+![Configurar API Gateway](img/05_crear_apigateway.png)
+
 ### 5.4 Permisos de invocación Lambda
 
 ```bash
@@ -388,6 +398,8 @@ aws apigateway create-deployment \
 https://hakg55gysh.execute-api.us-east-1.amazonaws.com/dev
 ```
 
+![Permisos y Deploy](img/06_permisos_deploy.png)
+
 ---
 
 ## Paso 6: Pruebas de la API
@@ -415,6 +427,8 @@ curl -s -X POST \
 
 La imagen se subió exitosamente a S3 y se generó un `image_id` único: `6715dc8ae89848a2b71d5191bea340a0`.
 
+![POST upload](img/07_test_post_upload.png)
+
 ### 6.2 Prueba GET /metadata/{image_id} — Obtener metadatos
 
 Se consulta el endpoint con el `image_id` obtenido en el paso anterior:
@@ -435,6 +449,8 @@ curl -s -X GET \
 
 Los metadatos se recuperaron correctamente desde DynamoDB, incluyendo la URL de la imagen en S3 y su tamaño.
 
+![GET metadata](img/08_test_get_metadata.png)
+
 ### 6.3 Prueba con ID inexistente (caso borde)
 
 ```bash
@@ -450,6 +466,8 @@ curl -s -X GET \
 ```
 
 La función maneja correctamente el caso en que el `image_id` no existe en la base de datos.
+
+![Test 404](img/11_test_404.png)
 
 ### 6.4 Verificación de datos en S3
 
@@ -493,6 +511,8 @@ aws dynamodb scan --table-name ImageMetadata
     "ScannedCount": 1
 }
 ```
+
+![Verificación S3 y DynamoDB](img/09_verificacion_s3_dynamo.png)
 
 ---
 
@@ -562,6 +582,8 @@ REPORT RequestId: edcfe45c-ea85-408c-8e58-eff4c33b397d
 ```
 
 Las métricas confirman que las invocaciones fueron exitosas (0 errores) con tiempos de respuesta aceptables.
+
+![CloudWatch Logs y Metricas](img/10_cloudwatch_logs.png)
 
 ### 7.3 Optimización del Rendimiento
 
