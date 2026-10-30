@@ -617,13 +617,11 @@ Las métricas confirman que las invocaciones fueron exitosas (0 errores) con tie
 
 ![CloudWatch Logs y Metricas](img/10_cloudwatch_logs.png)
 
-**Vista en la consola AWS — CloudWatch Log Groups de las Lambdas:**
+**Vista en la consola AWS — CloudWatch Log Events de `get_image_metadata` mostrando los logs de ejecución:**
 
-![Consola AWS CloudWatch upload](img/aws_05_cloudwatch_upload.png)
+![Consola AWS CloudWatch Logs](img/aws_05b_cloudwatch_get.png)
 
-![Consola AWS CloudWatch get](img/aws_05b_cloudwatch_get.png)
-
-**Vista en la consola AWS — Pestaña Monitor de Lambda con métricas de invocaciones:**
+**Vista en la consola AWS — Pestaña Monitor de Lambda `upload_image` con gráficos de Invocations, Duration, Error count y Success rate:**
 
 ![Consola AWS Lambda Monitor](img/aws_06_cloudwatch_metrics.png)
 
