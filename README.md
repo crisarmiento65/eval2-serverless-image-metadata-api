@@ -58,6 +58,10 @@ Bucket creado exitosamente con la nomenclatura `my-image-storage-bucket-csarmien
 
 ![Crear Bucket S3](img/01_crear_s3.png)
 
+**Vista en la consola AWS — Bucket S3 con la imagen subida:**
+
+![Consola AWS S3](img/aws_01_s3_bucket.png)
+
 ---
 
 ## Paso 3: Crear la Tabla DynamoDB
@@ -96,6 +100,14 @@ aws dynamodb create-table \
 Tabla creada con modo de capacidad bajo demanda (PAY_PER_REQUEST), lo que permite escalar automáticamente.
 
 ![Crear DynamoDB](img/02_crear_dynamodb.png)
+
+**Vista en la consola AWS — Tabla ImageMetadata con partition key `image_id` (String), modo On-demand:**
+
+![Consola AWS DynamoDB](img/aws_02_dynamodb_table.png)
+
+**Items almacenados en la tabla:**
+
+![Consola AWS DynamoDB Items](img/aws_02b_dynamodb_items.png)
 
 ---
 
@@ -193,6 +205,10 @@ aws lambda create-function \
 
 ![Crear Lambda upload_image](img/03_crear_lambda_upload.png)
 
+**Vista en la consola AWS — Función `upload_image` con código y trigger API Gateway:**
+
+![Consola AWS Lambda upload](img/aws_03b_lambda_upload.png)
+
 ### 4.2 Función `get_image_metadata`
 
 Esta función consulta DynamoDB para obtener los metadatos de una imagen dado su `image_id`.
@@ -285,6 +301,14 @@ aws lambda create-function \
 
 ![Crear Lambda get_image_metadata](img/04_crear_lambda_get.png)
 
+**Vista en la consola AWS — Ambas funciones Lambda creadas (Python 3.12):**
+
+![Consola AWS Lambda list](img/aws_03_lambda_list.png)
+
+**Configuración de `get_image_metadata`:**
+
+![Consola AWS Lambda get](img/aws_03d_lambda_get.png)
+
 ---
 
 ## Paso 5: Configurar API Gateway
@@ -366,6 +390,10 @@ aws apigateway put-integration \
 
 ![Configurar API Gateway](img/05_crear_apigateway.png)
 
+**Vista en la consola AWS — API Gateway con recursos `/upload` (POST) y `/metadata/{image_id}` (GET):**
+
+![Consola AWS API Gateway Resources](img/aws_04b_apigateway_resources.png)
+
 ### 5.4 Permisos de invocación Lambda
 
 ```bash
@@ -399,6 +427,10 @@ https://hakg55gysh.execute-api.us-east-1.amazonaws.com/dev
 ```
 
 ![Permisos y Deploy](img/06_permisos_deploy.png)
+
+**Vista en la consola AWS — Stage `dev` desplegado:**
+
+![Consola AWS API Gateway Stages](img/aws_04c_apigateway_stages.png)
 
 ---
 
@@ -584,6 +616,16 @@ REPORT RequestId: edcfe45c-ea85-408c-8e58-eff4c33b397d
 Las métricas confirman que las invocaciones fueron exitosas (0 errores) con tiempos de respuesta aceptables.
 
 ![CloudWatch Logs y Metricas](img/10_cloudwatch_logs.png)
+
+**Vista en la consola AWS — CloudWatch Log Groups de las Lambdas:**
+
+![Consola AWS CloudWatch upload](img/aws_05_cloudwatch_upload.png)
+
+![Consola AWS CloudWatch get](img/aws_05b_cloudwatch_get.png)
+
+**Vista en la consola AWS — Pestaña Monitor de Lambda con métricas de invocaciones:**
+
+![Consola AWS Lambda Monitor](img/aws_06_cloudwatch_metrics.png)
 
 ### 7.3 Optimización del Rendimiento
 
